@@ -1,9 +1,10 @@
 // index.js
 // where your node app starts
-
+require('dotenv').config()
 // init project
 var express = require('express');
 var app = express();
+
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -18,10 +19,14 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api/:userDate", function (req, res) {
+  const {userDate} = req.params;
+  let date = new Date(userDate);
+  let unix = Math.floor(date.getTime()/1000);
+  let utc = date.toUTCString();
+
+  res.json({unix, utc});
 });
 
 
